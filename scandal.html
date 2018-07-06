@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        SCANDALOUS TOUCHING
+    </title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
+    <style type="text/css">
+
+    .is-fullheight {
+        height: 95vh;
+    }
+
+    .is-halfheight {
+        height: 40vh;
+    }
+
+    .scandal-btn {
+        padding: 3em;
+        box-shadow: 0 2px 30px #900;
+        margin: .5em;
+        font-family: 'Lemon/Milk', sans-serif;
+        font-size: 64px;
+    }
+    </style>
+</head>
+<body>
+    <section id="scandal-app" class="hero is-fullheight has-background-grey-darker">
+        <div class="container has-text-centered">
+            <br>
+            <div class="columns is-fullheight">
+                <div class="column">
+                    <h1 class="title is-3 has-text-white">🚨🔥 Scandalous Touching 🔥🚨</h1>
+                    <h1 class="title is-3 has-text-white">{{ points }} points</h1>
+                    <h2 class="title is-2 has-text-danger">{{ currentTime }} seconds left!!!</h2>
+
+                    <input type="button" id="startButton" value="Start Game" v-on:click="startTimer" class="button is-danger is-large">
+
+                    <h1 class="subtitle is-3 has-text-white">Hit the red button <span class="has-text-danger  title is-1">{{ max }}</span> times</h1>
+
+                    <h1 class="title is-1 has-text-white" v-if="isGameover">GAMEOVER</h1>
+                    <a v-bind:class="{ 'is-danger' : (keycode == 38) }" class="button is-large scandal-btn is-light">UP</a>
+                    <br>
+                    <a v-bind:class="{ 'is-danger' : (keycode == 37) }" class="button is-large scandal-btn is-light">LEFT</a>
+                    <a v-bind:class="{ 'is-danger' : (keycode == 40) }" class="button is-large scandal-btn is-light">DOWN</a>
+                    <a v-bind:class="{ 'is-danger' : (keycode == 39) }" class="button is-large scandal-btn is-light">RIGHT</a>
+                </div>
+            </div>
+        </div>
+        <span class="has-text-centered has-text-grey-light">tap location scandal discipline</span>
+        <div class="modal" v-bind:class="{'is-active': isGameover}">
+          <div class="modal-background" @click="closeModal"></div>
+          <div class="modal-content has-text-centered">
+            <h1 class="title is-2 has-text-danger">SO SCANDALOUS</h1>
+            <p class="image">
+              <!-- <img src="https://bulma.io/images/placeholders/1280x960.png" alt=""> -->
+              <img :src="scandals[Math.floor((Math.random() * 19))]" alt="">
+            </p>
+          </div>
+          <button class="modal-close is-large" aria-label="close"></button>
+        </div>
+    </section>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#scandal-app',
+        data: {
+            max : 5,
+            keycode : 37,
+            message : '',
+            currentTime : 20,
+            updateTimer : '',
+            clickCounter: '',
+            gameStatus: 'stop',
+            isGameover: false,
+            points: 0,
+            imagesrc: 'https://scontent-sit4-1.xx.fbcdn.net/v/t31.0-8/16905062_985497468261281_3690257448851850227_o.jpg?_nc_cat=0&oh=d2a7231dc2e856c246152cfbd2d35a94&oe=5B9F5BF4',
+            scandals: [
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t31.0-8/16905062_985497468261281_3690257448851850227_o.jpg?_nc_cat=0&oh=d2a7231dc2e856c246152cfbd2d35a94&oe=5B9F5BF4",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/12745692_749673561843674_4140219876013906751_n.jpg?_nc_cat=0&oh=43a24d71ffa711004ea37b15ca69e14a&oe=5BAC590C",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/1238107_394236774054023_1712314337_n.jpg?_nc_cat=0&oh=8239c6676f0f22f7ddf51f9092cf1ea3&oe=5BEAC7DC",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/12670464_749673458510351_7478648695517490851_n.jpg?_nc_cat=0&oh=fb25a6607749ba727160819bc58cf03d&oe=5BA8D3D1",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/12705193_749673648510332_8301797533080390039_n.jpg?_nc_cat=0&oh=6af3c9aeb2bdf03e4b8e4965512ef774&oe=5BA73F23",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/29243919_10211535434797899_1168860201062975575_n.jpg?_nc_cat=0&oh=7a881ef9d9214c813b1b17cab56043bc&oe=5BA21D19",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/29244494_10211535434437890_7926602128575169098_n.jpg?_nc_cat=0&oh=354fc8aa1458b0b33b831272d037bd22&oe=5BA30207",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/29197107_10211535435517917_1159642077102370740_n.jpg?_nc_cat=0&oh=bdaa7da5e3bd7a6d261cd10dc3d0b07a&oe=5B9F7647",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/11147196_612472478897117_196875974827241839_n.jpg?_nc_cat=0&oh=0fe98d8fdbf5179b055b13e72135917d&oe=5BE2F0F4",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t31.0-8/16905062_985497468261281_3690257448851850227_o.jpg?_nc_cat=0&oh=d2a7231dc2e856c246152cfbd2d35a94&oe=5B9F5BF4",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/16865210_985497451594616_9023900421059443144_n.jpg?_nc_cat=0&oh=853df5f2225d6c44b876fe61d7e4e35b&oe=5BA0DDE8",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/16831205_985496988261329_4860111053416266168_n.jpg?_nc_cat=0&oh=f97c59dfb3bc1a1798bf0981353afee6&oe=5BA83F3A",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/16864765_985497528261275_695580571277717239_n.jpg?_nc_cat=0&oh=dfc6069601c810d85258a761eeea2f1e&oe=5BDB4919",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/16831918_985496984927996_4503944266839198632_n.jpg?_nc_cat=0&oh=eb301eebc33962c3baec39780aca5b9f&oe=5BEB7CA0",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/11112304_612473882230310_317193514720351148_n.jpg?_nc_cat=0&oh=2d6885f8f5b11077891804beeba27344&oe=5BDBBABD",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/11133761_612473055563726_2109215840102167614_n.jpg?_nc_cat=0&oh=9e5a60d473ffa7a4dc818a797666bd85&oe=5BE3EB22",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/11150865_612473025563729_8210381149339193977_n.jpg?_nc_cat=0&oh=e4c0971cc279b1cb3e5ad2d8c438cf11&oe=5BE4BE99",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/11150865_612473025563729_8210381149339193977_n.jpg?_nc_cat=0&oh=e4c0971cc279b1cb3e5ad2d8c438cf11&oe=5BE4BE99",
+            "https://scontent-sit4-1.xx.fbcdn.net/v/t1.0-9/11147196_612472478897117_196875974827241839_n.jpg?_nc_cat=0&oh=0fe98d8fdbf5179b055b13e72135917d&oe=5BE2F0F4"
+            ]
+        },
+        methods: {
+            startTimer: function() {
+                this.gameStatus = 'start';
+                this.points = 0;
+                this.resetter();
+                this.currentTime = 20;
+                this.message = 'GAMING'
+                this.updateTimer = setInterval(this.timer, 1000);
+                document.getElementById("startButton").style.display = 'none';
+            },
+            timer: function() {
+                if (this.currentTime == 0) {
+                    this.isGameover = true;
+                    clearInterval(this.updateTimer);
+                    document.getElementById("startButton").style.display = 'block';
+                    document.getElementById("time").innerHTML = this.currentTime;
+                    return;
+                }
+                --this.currentTime;
+            },
+            resetter: function() {
+                this.clickCounter = 0;
+                this.max = Math.floor((Math.random() * 10) + 1); //newmax
+                var prev = this.keycode;
+                while(prev == this.keycode) {
+                    this.keycode = Math.floor((Math.random() * 4) + 37); //newkeycode
+                }
+            },
+            closeModal: function() {
+
+            }
+        },
+        mounted: function() {
+            var vm = this;
+            window.addEventListener('keyup', function(event) {
+                if(event.keyCode == vm.keycode && vm.gameStatus == 'start') {
+                    var audio = new Audio('has.wav');
+                    audio.play();
+                    vm.clickCounter++;
+                    console.log(vm.clickCounter);
+                    if(vm.clickCounter == vm.max) {
+                        vm.points++;
+                        vm.resetter();
+                    }
+                } else if(event.keyCode != vm.keycode && vm.gameStatus == 'start') {
+                    var audio = new Audio('kas.wav');
+                    audio.play();
+                    vm.isGameover = true;
+                    // vm.message = 'GAMEOVEr'
+                    vm.gameStatus = 'stop'
+                    clearInterval(vm.updateTimer);
+                    document.getElementById("startButton").style.display = 'block';
+                }
+            });
+        }
+    });
+</script>
+</html>
