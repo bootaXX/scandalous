@@ -34,7 +34,7 @@
                     <h1 class="title is-3 has-text-white">{{ points }} points</h1>
                     <h2 class="title is-2 has-text-danger">{{ currentTime }} seconds left!!!</h2>
 
-                    <input type="button" id="startButton" value="Start Game" v-on:click="startTimer" class="button is-danger is-large">
+                    <input v-if="gameStatus == 'stop'" type="button" id="startButton" value="Start Game" v-on:click="startTimer" class="button is-danger is-large">
 
                     <h1 class="subtitle is-3 has-text-white">Hit the red button <span class="has-text-danger  title is-1">{{ max }}</span> times</h1>
 
@@ -49,7 +49,7 @@
         </div>
         <span class="has-text-centered has-text-grey-light">tap location scandal discipline</span>
         <div class="modal" v-bind:class="{'is-active': isGameover}">
-          <div class="modal-background" @click="closeModal"></div>
+          <div class="modal-background"></div>
           <div class="modal-content has-text-centered">
             <h1 class="title is-2 has-text-danger">SO SCANDALOUS</h1>
             <p class="image">
@@ -57,7 +57,7 @@
               <img :src="scandals[Math.floor((Math.random() * 19))]" alt="">
             </p>
           </div>
-          <button class="modal-close is-large" aria-label="close"></button>
+          <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
         </div>
     </section>
 </body>
@@ -107,13 +107,11 @@
                 this.currentTime = 20;
                 this.message = 'GAMING'
                 this.updateTimer = setInterval(this.timer, 1000);
-                document.getElementById("startButton").style.display = 'none';
             },
             timer: function() {
                 if (this.currentTime == 0) {
                     this.isGameover = true;
                     clearInterval(this.updateTimer);
-                    document.getElementById("startButton").style.display = 'block';
                     document.getElementById("time").innerHTML = this.currentTime;
                     return;
                 }
@@ -128,7 +126,8 @@
                 }
             },
             closeModal: function() {
-
+                this.isGameover = false;
+                this.gameStatus = 'stop';
             }
         },
         mounted: function() {
@@ -138,7 +137,6 @@
                     var audio = new Audio('has.wav');
                     audio.play();
                     vm.clickCounter++;
-                    console.log(vm.clickCounter);
                     if(vm.clickCounter == vm.max) {
                         vm.points++;
                         vm.resetter();
@@ -150,7 +148,6 @@
                     // vm.message = 'GAMEOVEr'
                     vm.gameStatus = 'stop'
                     clearInterval(vm.updateTimer);
-                    document.getElementById("startButton").style.display = 'block';
                 }
             });
         }
